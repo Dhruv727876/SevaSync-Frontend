@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-    baseURL: "http://localhost:5000",
+    baseURL: "https://sevasync-backend-917106621948.us-central1.run.apphttp://localhost:5000",
 });
 
 // Send text to backend (AI parsing)
