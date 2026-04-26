@@ -70,9 +70,9 @@ const Dashboard = () => {
         } catch (error) {
             console.error('Failed to fetch needs:', error);
             const demoData = [
-                { id: 1, need_type: 'Food for 200 people', village: 'Kamrup', people: 200, urgency: 'Critical', priority_score: 9.8, status: 'pending', timestamp: '5m ago' },
-                { id: 2, need_type: 'Medical Supplies', village: 'Majuli', people: 150, urgency: 'High', priority_score: 8.5, status: 'pending', timestamp: '12m ago' },
-                { id: 3, need_type: 'Drinking Water', village: 'Dhubri', people: 500, urgency: 'Medium', priority_score: 7.2, status: 'pending', timestamp: '24m ago' }
+                { id: 1, need_type: 'Food', village: 'Kamrup', people: 200, urgency: 'Critical', priority_score: 98, status: 'pending' },
+                { id: 2, need_type: 'Medical', village: 'Majuli', people: 150, urgency: 'High', priority_score: 85, status: 'pending' },
+                { id: 3, need_type: 'Drinking', village: 'Dhubri', people: 500, urgency: 'Medium', priority_score: 72, status: 'pending' }
             ];
             setNeeds(demoData);
         } finally {
@@ -88,15 +88,15 @@ const Dashboard = () => {
         setCurrentNeed(need);
         setIsModalOpen(true);
         setMatchingLoading(true);
-        
+
         try {
             console.log("Calling match API with:", need.id);
             const res = await matchVolunteers(need.id);
-            
+
             // Following user's requested data structure
             const data = res.data;
             console.log("MATCH RESPONSE:", data);
-            
+
             const rawMatches = data.matches || data.volunteers || data || [];
             const formattedMatches = rawMatches.map(v => ({
                 id: v.id,
@@ -104,7 +104,7 @@ const Dashboard = () => {
                 match_score: v.match_score || "92",
                 explanation: v.explanation || `${v.name} has relevant skills and is available now.`
             }));
-            
+
             setVolunteers(formattedMatches);
         } catch (error) {
             console.error('Matching failed:', error);
@@ -127,9 +127,9 @@ const Dashboard = () => {
     };
 
     const handleAnalysisComplete = (newNeed) => {
-        const needWithMeta = { 
-            ...newNeed, 
-            status: 'pending', 
+        const needWithMeta = {
+            ...newNeed,
+            status: 'pending',
             timestamp: 'Just now',
             confidence: Math.floor(Math.random() * (95 - 85 + 1) + 85)
         };
@@ -144,7 +144,7 @@ const Dashboard = () => {
     const filteredNeeds = needs.filter(need => {
         if (showCriticalOnly && need.urgency?.toLowerCase() !== 'critical') return false;
         if (showNamedOnly && need.village?.toLowerCase() === 'unknown') return false;
-        
+
         const search = searchTerm.toLowerCase();
         if (search) {
             return (
@@ -160,10 +160,10 @@ const Dashboard = () => {
         <div className="h-screen bg-zinc-950 flex flex-col font-['Inter'] overflow-hidden">
             <Navbar />
             <StatsBar needsCount={needs.length} />
-            
+
             <main className="flex-1 flex overflow-hidden relative">
                 {/* Mobile Toggle Button */}
-                <button 
+                <button
                     onClick={() => setIsSidebarOpen(true)}
                     className="md:hidden fixed bottom-6 right-6 z-50 p-4 bg-indigo-600 text-white rounded-full shadow-2xl shadow-indigo-500/40 active:scale-95 transition-all"
                 >
@@ -187,8 +187,8 @@ const Dashboard = () => {
                         handleAnalysisComplete(newNeed);
                         setIsSidebarOpen(false); // Auto-close on mobile
                     }} />
-                    
-                    <button 
+
+                    <button
                         onClick={handleMatch}
                         disabled={!currentNeed || matchingLoading}
                         className="w-full mt-4 py-4 bg-zinc-900 border border-zinc-800 hover:border-indigo-500/50 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-2xl disabled:opacity-30 disabled:cursor-not-allowed group cursor-pointer"
@@ -200,7 +200,7 @@ const Dashboard = () => {
                         )}
                         <span>Match Volunteers</span>
                     </button>
-                    
+
                     <div className="mt-8">
                         <div className="flex items-center gap-2 text-indigo-400 mb-4 px-2">
                             <Sparkles size={16} />
@@ -210,7 +210,7 @@ const Dashboard = () => {
                             {decisionLog.length > 0 ? (
                                 <AnimatePresence initial={false}>
                                     {decisionLog.map((log) => (
-                                        <motion.div 
+                                        <motion.div
                                             key={log.id}
                                             initial={{ opacity: 0, x: -20 }}
                                             animate={{ opacity: 1, x: 0 }}
@@ -243,7 +243,7 @@ const Dashboard = () => {
 
                 {/* Mobile Sidebar Overlay */}
                 {isSidebarOpen && (
-                    <div 
+                    <div
                         className="md:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
                         onClick={() => setIsSidebarOpen(false)}
                     />
@@ -257,23 +257,23 @@ const Dashboard = () => {
                                 <h1 className="text-2xl font-bold text-white tracking-tight">Needs Dashboard</h1>
                                 <p className="text-zinc-500 text-sm mt-1">Real-time situational awareness across regions</p>
                             </div>
-                            <button 
+                            <button
                                 onClick={() => setIsSidebarOpen(true)}
                                 className="md:hidden p-3 bg-indigo-600/10 border border-indigo-500/20 rounded-2xl text-indigo-400 active:scale-95 transition-all"
                             >
                                 <Sparkles size={20} />
                             </button>
                         </div>
-                        
+
                         <div className="flex items-center gap-3 w-full sm:w-auto">
                             <div className="flex bg-zinc-900 border border-zinc-800 p-1 rounded-xl mr-2">
-                                <button 
+                                <button
                                     onClick={() => setViewMode('cards')}
                                     className={`p-1.5 rounded-lg transition-all ${viewMode === 'cards' ? 'bg-zinc-800 text-white shadow-lg' : 'text-zinc-500 hover:text-white'}`}
                                 >
                                     <LayoutGrid size={16} />
                                 </button>
-                                <button 
+                                <button
                                     onClick={() => setViewMode('analytics')}
                                     className={`p-1.5 rounded-lg transition-all ${viewMode === 'analytics' ? 'bg-zinc-800 text-white shadow-lg' : 'text-zinc-500 hover:text-white'}`}
                                 >
@@ -282,19 +282,19 @@ const Dashboard = () => {
                             </div>
 
                             <div className="flex bg-zinc-900 border border-zinc-800 p-1 rounded-xl">
-                                <button 
+                                <button
                                     onClick={() => { setShowCriticalOnly(false); setShowNamedOnly(false); }}
                                     className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${(!showCriticalOnly && !showNamedOnly) ? 'bg-indigo-600 text-white shadow-lg' : 'text-zinc-500 hover:text-white'}`}
                                 >
                                     All
                                 </button>
-                                <button 
+                                <button
                                     onClick={() => setShowCriticalOnly(!showCriticalOnly)}
                                     className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${showCriticalOnly ? 'bg-red-600 text-white shadow-lg' : 'text-zinc-500 hover:text-white'}`}
                                 >
                                     Critical
                                 </button>
-                                <button 
+                                <button
                                     onClick={() => setShowNamedOnly(!showNamedOnly)}
                                     className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${showNamedOnly ? 'bg-indigo-600 text-white shadow-lg' : 'text-zinc-500 hover:text-white'}`}
                                 >
@@ -303,9 +303,9 @@ const Dashboard = () => {
                             </div>
                             <div className="relative flex-1 sm:flex-none">
                                 <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
-                                <input 
-                                    type="text" 
-                                    placeholder="Search villages..." 
+                                <input
+                                    type="text"
+                                    placeholder="Search villages..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                     className="pl-10 pr-4 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-sm transition-all focus:border-indigo-500 outline-none w-full min-w-[200px]"
@@ -328,17 +328,17 @@ const Dashboard = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-8">
                                 <AnimatePresence mode="popLayout">
                                     {filteredNeeds.map((need, i) => (
-                                        <NeedCard 
-                                            key={need.id || i} 
-                                            need={need} 
-                                            onFindVolunteers={handleFindVolunteers} 
+                                        <NeedCard
+                                            key={need.id || i}
+                                            need={need}
+                                            onFindVolunteers={handleFindVolunteers}
                                         />
                                     ))}
                                 </AnimatePresence>
                             </div>
                         ) : (
                             <div className="h-full flex flex-col items-center justify-center text-center">
-                                <motion.div 
+                                <motion.div
                                     initial={{ opacity: 0, scale: 0.8 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     className="w-24 h-24 bg-zinc-900/50 border border-zinc-800 rounded-full flex items-center justify-center mb-6 text-zinc-700 shadow-inner"
@@ -355,7 +355,7 @@ const Dashboard = () => {
                 </section>
             </main>
 
-            <MatchModal 
+            <MatchModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 volunteers={volunteers}
@@ -366,7 +366,7 @@ const Dashboard = () => {
                 onDeploy={() => currentNeed?.id && updateNeedStatus(currentNeed.id, 'assigned')}
             />
 
-            <CommandPalette 
+            <CommandPalette
                 isOpen={isCommandPaletteOpen}
                 onClose={() => setIsCommandPaletteOpen(false)}
                 needs={needs}
