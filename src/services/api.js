@@ -2,6 +2,9 @@ import axios from "axios";
 
 const API = axios.create({
     baseURL: "https://sevasync-backend-917106621948.us-central1.run.app",
+    headers: {
+        "x-api-key": "sevasync-secret-2024"
+    }
 });
 
 // Send text to backend (AI parsing)
