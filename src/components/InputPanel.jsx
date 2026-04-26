@@ -22,14 +22,17 @@ const InputPanel = ({ onAnalysisComplete }) => {
     };
 
     const handleAnalyze = async () => {
-        if (!text.trim() && !imageFile) return;
+        if (!text.trim() && !imageFile) {
+            toast.error('Please enter a description or upload an image.');
+            return;
+        }
 
         try {
             setLoading(true);
-            
+
             // Artificial delay to simulate complex AI reasoning (Perceived Intelligence Boost)
             await new Promise(resolve => setTimeout(resolve, 800));
-            
+
             let res;
             if (imageFile) {
                 res = await analyzeImage(imageFile);
@@ -38,18 +41,18 @@ const InputPanel = ({ onAnalysisComplete }) => {
             }
 
             console.log("AI RESPONSE:", res.data);
-            
+
             // Add a small delay for "Processing" feedback
             setLoading(true);
             toast.loading('Synthesizing situational data...', { id: 'analyze' });
             await new Promise(resolve => setTimeout(resolve, 1200));
 
             toast.success('Intelligence analysis complete', { id: 'analyze' });
-            
+
             if (onAnalysisComplete) {
                 onAnalysisComplete(res.data);
             }
-            
+
             // Clear state after success
             setText('');
             setImageFile(null);
@@ -69,7 +72,7 @@ const InputPanel = ({ onAnalysisComplete }) => {
                 <Sparkles className="text-indigo-500 w-6 h-6" />
                 AI Analysis
             </h2>
-            
+
             <div className="space-y-4">
                 <div className="relative group">
                     <textarea
@@ -87,7 +90,7 @@ const InputPanel = ({ onAnalysisComplete }) => {
                         {imageFile ? (
                             <div className="relative w-full h-48 rounded-xl overflow-hidden border border-zinc-800 group bg-zinc-950">
                                 <img src={imagePreview} alt="Upload Preview" className="w-full h-full object-contain" />
-                                <button 
+                                <button
                                     onClick={() => setImageFile(null)}
                                     disabled={loading}
                                     className="absolute top-2 right-2 p-1.5 bg-black/60 backdrop-blur-md rounded-full hover:bg-red-500/80 transition-colors cursor-pointer disabled:opacity-50"
@@ -101,12 +104,12 @@ const InputPanel = ({ onAnalysisComplete }) => {
                                     <ImageIcon size={20} />
                                     <span className="text-xs font-medium">Click to upload image</span>
                                 </div>
-                                <input 
-                                    type="file" 
-                                    className="hidden" 
-                                    accept="image/*" 
+                                <input
+                                    type="file"
+                                    className="hidden"
+                                    accept="image/*"
                                     onChange={handleImageUpload}
-                                    disabled={loading} 
+                                    disabled={loading}
                                 />
                             </label>
                         )}
