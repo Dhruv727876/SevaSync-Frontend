@@ -15,10 +15,10 @@ const AnalyticsView = ({ needs }) => {
     // Normalize urgency data for color mapping
     const urgencyData = needs.reduce((acc, need) => {
         const rawUrgency = need.urgency?.toLowerCase() || 'medium';
-        const urgency = rawUrgency === 'critical' || rawUrgency === 'high' || rawUrgency === 'medium' || rawUrgency === 'low' 
-            ? rawUrgency 
+        const urgency = rawUrgency === 'critical' || rawUrgency === 'high' || rawUrgency === 'medium' || rawUrgency === 'low'
+            ? rawUrgency
             : 'other';
-            
+
         const existing = acc.find(item => item.name === urgency);
         if (existing) {
             existing.value += 1;
@@ -29,7 +29,7 @@ const AnalyticsView = ({ needs }) => {
     }, []);
 
     const typeData = needs.reduce((acc, need) => {
-        const type = need.need_type?.split(' ')[0] || 'Other';
+        const type = need.need_type?.toLowerCase().trim() || 'other';
         const existing = acc.find(item => item.name === type);
         if (existing) {
             existing.value += 1;
@@ -44,7 +44,7 @@ const AnalyticsView = ({ needs }) => {
     const CustomTooltip = ({ active, payload }) => {
         if (active && payload && payload.length) {
             return (
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     className="bg-zinc-900/90 backdrop-blur-md border border-zinc-800 p-3 rounded-xl shadow-2xl pointer-events-none"
@@ -58,7 +58,7 @@ const AnalyticsView = ({ needs }) => {
     };
 
     return (
-        <motion.div 
+        <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full pb-8"
@@ -85,16 +85,16 @@ const AnalyticsView = ({ needs }) => {
                                 stroke="none"
                             >
                                 {urgencyData.map((entry, index) => (
-                                    <Cell 
-                                        key={`cell-${index}`} 
+                                    <Cell
+                                        key={`cell-${index}`}
                                         fill={COLORS[entry.name.toLowerCase()] || COLORS.other}
                                         className="outline-none"
                                     />
                                 ))}
                             </Pie>
                             <Tooltip content={<CustomTooltip />} isAnimationActive={false} />
-                            <Legend 
-                                verticalAlign="bottom" 
+                            <Legend
+                                verticalAlign="bottom"
                                 height={36}
                                 content={({ payload }) => (
                                     <div className="flex justify-center gap-6 mt-4">
@@ -124,32 +124,32 @@ const AnalyticsView = ({ needs }) => {
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={typeData}>
                             <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} opacity={0.5} />
-                            <XAxis 
-                                dataKey="name" 
-                                stroke="#71717a" 
-                                fontSize={10} 
+                            <XAxis
+                                dataKey="name"
+                                stroke="#71717a"
+                                fontSize={10}
                                 fontWeight="bold"
                                 axisLine={false}
                                 tickLine={false}
                                 dy={10}
                             />
-                            <YAxis 
-                                stroke="#71717a" 
-                                fontSize={10} 
+                            <YAxis
+                                stroke="#71717a"
+                                fontSize={10}
                                 fontWeight="bold"
                                 axisLine={false}
                                 tickLine={false}
                             />
                             <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(255,255,255,0.03)' }} isAnimationActive={false} />
-                            <Bar 
-                                dataKey="value" 
+                            <Bar
+                                dataKey="value"
                                 radius={[8, 8, 0, 0]}
                                 barSize={40}
                             >
                                 {typeData.map((entry, index) => (
-                                    <Cell 
-                                        key={`cell-${index}`} 
-                                        fill={CATEGORY_COLORS[index % CATEGORY_COLORS.length]} 
+                                    <Cell
+                                        key={`cell-${index}`}
+                                        fill={CATEGORY_COLORS[index % CATEGORY_COLORS.length]}
                                     />
                                 ))}
                             </Bar>
