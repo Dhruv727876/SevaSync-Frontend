@@ -57,6 +57,7 @@ const Dashboard = () => {
     };
 
     const fetchNeeds = async () => {
+        console.log("fetchNeeds called, needs.length:", needs.length);
         if (needs.length > 0) {
             setLoading(false);
             return;
@@ -64,7 +65,7 @@ const Dashboard = () => {
         setLoading(true);
         try {
             const res = await getNeeds();
-            const data = res.data || [];
+            const data = res.data.data || [];
             const needsWithStatus = data.map(n => ({ ...n, status: 'pending', timestamp: 'Just now' }));
             setNeeds(needsWithStatus);
         } catch (error) {
