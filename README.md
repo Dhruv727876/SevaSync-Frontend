@@ -1,16 +1,34 @@
-# React + Vite
+# SevaSync Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **Note:** This is the **Frontend repository** for SevaSync. The backend code is in a separate repository: [SevaSyncBackend](https://github.com/Dhruv727876/SevaSyncBackend)
 
-Currently, two official plugins are available:
+AI-Powered Community Need Intelligence & Volunteer Coordination Platform
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Project Overview
 
-## React Compiler
+SevaSync is an intelligent disaster response coordination system that converts scattered community data into actionable intelligence, automatically matching the right volunteers to critical needs in real-time.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**Live Demo:** https://dhruv727876.github.io/SevaSync-Frontend/
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Frontend:** React 19 + Vite 8
+- **Styling:** Tailwind CSS 4, Framer Motion
+- **Data Visualization:** Recharts
+- **HTTP Client:** Axios
+- **Deployment:** GitHub Pages
+
+## Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Deploy to GitHub Pages
+npm run deploy
